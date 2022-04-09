@@ -1,8 +1,8 @@
 # DocHub
 
-*** Ветка более не поддерживается. ***
+Ветка не поддерживается.
 
-Актуальную кодовую базу вы найдете в [master](https://github.com/RabotaRu/DocHub/).
+Актуальная в [master](https://github.com/RabotaRu/DocHub/).
 
 # Лицензия
 DocHub распространяется под лицензией
