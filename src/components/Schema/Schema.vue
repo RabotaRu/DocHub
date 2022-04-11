@@ -145,6 +145,28 @@ export default {
         links: {}
       };
 
+      const sift = {
+        namespaces: new Set(),
+        drawComponentsIds: new Set()
+      };
+
+      const siftComponents = (component) => {
+        if (!sift.namespaces.has(component.id)) {
+          // Если компонент добавлен как пространство имен, то он отрисуется как контейнер, скипаем
+          sift.drawComponentsIds.add(component.id)
+        }
+
+        component.namespaces.forEach((ns) => {
+          // Если был компонент, то теперь он должен стать контейнером
+          sift.drawComponentsIds.delete(ns.id)
+          sift.namespaces.add(ns.id)
+        });
+
+        (component.links || []).forEach((link) => {
+          siftComponents(link);
+        });
+      }
+
       // Размещает компонент в структуре схемы
       const expandComponent = (component, extra) => {
         let namespaces = structure.namespaces;
@@ -154,12 +176,17 @@ export default {
           namespaces = namespaces.namespaces[namespace.id];
         });
         !namespaces.components && (namespaces.components = {});
-        if (!extra || !namespaces.components[component.id]) {
+        if ((!extra || !namespaces.components[component.id]) && sift.drawComponentsIds.has(component.id)) {
           namespaces.components[component.id] = Object.assign({extra}, component);
         }
       }
 
-      (this.schema.components || []).map((component) => {
+      // в 2 прохода(
+      const components = (this.schema.components || [])
+      // Сначала определим какие компоненты будут рисоваться как контейнеры
+      components.forEach(siftComponents);
+
+      components.forEach((component) => {
         // Разбираем компонент
         expandComponent(component, false);
         // Разбираем зависимости компонента
@@ -167,10 +194,6 @@ export default {
           expandComponent(link, true);
           structure.links[`${component.id} ${link.direction} ${link.id}`] =
               Object.assign(link, { linkFrom: component.id, linkTo: link.id});
-          /*
-          structure.links[`[${component.id}] ${link.direction} [${link.id}]`] =
-              Object.assign(link, { linkFrom: component.id, linkTo: link.id});
-          */
         });
       });
 
