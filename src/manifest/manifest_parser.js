@@ -78,20 +78,22 @@ const parser = {
         this.pushToMergeMap(errorPath, null, uri);
         // eslint-disable-next-line no-console
         console.error(e, `Ошибка запроса [${errorPath}:${uri}]`, e);
+        const payload = {
+            uri,
+            error: e
+        };
         let errorType = (() => {
             switch (e.name) {
                 case 'YAMLSyntaxError':
                 case 'YAMLSemanticError':
+                    payload.range = e.source.range;
                     return "syntax";
                 default:
                     return 'net';
             }
         })();
 
-        this.onError && this.onError(errorType, {
-            uri,
-            error: e
-        });
+        this.onError && this.onError(errorType, payload);
     },
     // Сохраняет в карте склеивания данные
     pushToMergeMap(path, source, location) {

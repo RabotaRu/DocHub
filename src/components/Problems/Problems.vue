@@ -9,7 +9,7 @@
       <ul v-if="problems.length" style="margin-top: 16px">
         <template v-for="problem in problems[currentTab].problems">
           <li :key="problem.route">
-            <a v-if="problem.target === 'plugin'" @click="onGoto(problem.route)">
+            <a v-if="problem.target === 'plugin'" @click="onGoto(problem.route, problem.range)">
               {{problem.title}}
             </a>
             <router-link v-else-if="!problem.target"
@@ -30,8 +30,8 @@
 export default {
   name: 'Problems',
   methods: {
-    onGoto(route) {
-      window.$PAPI.goto(route);
+    onGoto(route, range) {
+      window.$PAPI.goto(route, undefined, undefined, range);
     }
   },
   computed: {

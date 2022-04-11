@@ -74,8 +74,8 @@
         showDebugger: function () {
           this.request({url: 'plugin:/idea/debugger/show'});
         },
-        goto: function(source, entity, id) {
-          this.request({url: `plugin:/idea/goto`, source, entity, id});
+        goto: function(source, entity, id, range) {
+          this.request({url: `plugin:/idea/goto`, source, entity, id, range});
         }
       };      
       "API_INJECTION"

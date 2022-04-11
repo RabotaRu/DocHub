@@ -116,7 +116,8 @@ export default {
                 if (action === 'syntax') {
                     const problem = {
                         problem: "Ошибки синтаксиса",
-                        route: (data.error.config || {url: data.uri}).url
+                        route: (data.error.config || {url: data.uri}).url,
+                        range: data.range
                     };
                     if (process.env.VUE_APP_DOCHUB_MODE === "plugin") {
                         problem.target = "plugin";
