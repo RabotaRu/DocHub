@@ -16,6 +16,7 @@ node_modules
 # local env files
 *.env*
 !example.env
+!example.env.backend
 
 # local bugs log
 bugs.bug
@@ -38,3 +39,5 @@ yarn-error.log*
 # Вызвало сбой сборки докера
 # пока вернем до прихода DevOps
 # package-lock.json*
+
+docker-compose.override.yaml
