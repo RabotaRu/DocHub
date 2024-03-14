@@ -84,9 +84,9 @@ export default {
 	},
 	applyManifest: async function(app, storage) {
 		app.storage = storage;  // Инициализируем данные хранилища
+		this.resetCustomFunctions(storage.manifest);
 		validators(app);        // Выполняет валидаторы
 		Object.freeze(app.storage);
-		this.resetCustomFunctions(storage.manifest);
 		this.onApplyManifest.map((listener) => listener(app));
 	},
 	cleanStorage(app) {
