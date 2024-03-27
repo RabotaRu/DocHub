@@ -94,7 +94,7 @@
       footerProps() {
         let lengthOtions = Array.from(
           new Set(
-            [5, 10, 15, Math.min(this.source.dataset?.length, 20)]
+            [5, 10, 15, 20, this.source.dataset?.length]
           )
         );
         const itemsPerPageOptions = lengthOtions
