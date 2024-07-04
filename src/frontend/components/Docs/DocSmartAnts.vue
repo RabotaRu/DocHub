@@ -6,24 +6,26 @@
           {{ isFullScreen ? 'mdi-close-box-outline' : 'fullscreen' }}
         </v-icon>
       </div>
-      <smartants-bar
-        v-bind:warnings="warnings"
-        v-bind:selected-nodes="selectedNodes"
-        v-bind:focus-nodes="focusNodes"
-        v-bind:scenario="scenario"
-        v-bind:scenarios="scenarios"
-        v-bind:is-print-version="isPrintVersion"
-        v-bind:is-show-links="isShowLinks"
-        v-bind:is-unwisp="isUnwisp"
-        v-bind:is-paying="isPaying"
-        v-on:exportToExcalidraw="exportToExcalidraw"
-        v-on:doFocus="doFocus"
-        v-on:clearFocus="clearFocus"
-        v-on:playScenario="playScenario"
-        v-on:playNext="playNext"
-        v-on:setScenario="setScenario"
-        v-on:setUnwisp="setUnwisp"
-        v-on:setShowLinks="setShowLinks" />
+      <div class="fixed">
+        <smartants-bar
+          v-bind:warnings="warnings"
+          v-bind:selected-nodes="selectedNodes"
+          v-bind:focus-nodes="focusNodes"
+          v-bind:scenario="scenario"
+          v-bind:scenarios="scenarios"
+          v-bind:is-print-version="isPrintVersion"
+          v-bind:is-show-links="isShowLinks"
+          v-bind:is-unwisp="isUnwisp"
+          v-bind:is-paying="isPaying"
+          v-on:exportToExcalidraw="exportToExcalidraw"
+          v-on:doFocus="doFocus"
+          v-on:clearFocus="clearFocus"
+          v-on:playScenario="playScenario"
+          v-on:playNext="playNext"
+          v-on:setScenario="setScenario"
+          v-on:setUnwisp="setUnwisp"
+          v-on:setShowLinks="setShowLinks" />
+      </div>
       <schema
         ref="schema"
         v-model="status"
@@ -342,16 +344,28 @@
   };
 </script>
 
+<style>
+.fixed {
+  width: inherit;
+  position: fixed;
+  background: transparent;
+}
+.markdown-document .fixed {
+  position: static;
+}
+
+</style>
+
 <style scoped>
 .schema {
   /* border: solid 2px #ff0000; */
   aspect-ratio : 1 / 0.6;
   width: 100%;
   min-width: 100%;
+  margin-top: 60px;
 }
 
 .container {
-  position: relative;
   position: relative;
 }
 
