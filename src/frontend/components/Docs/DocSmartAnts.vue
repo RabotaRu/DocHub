@@ -213,9 +213,12 @@
 
         const svgElement = this.$refs.schema.$el;
         addStyle(svgElement.childNodes);
+        svgElement.style.width = svgElement.clientWidth;
 
         const serializer = new XMLSerializer();
         let source = serializer.serializeToString(svgElement);
+
+        svgElement.style.width = '';
 
         // eslint-disable-next-line no-useless-escape
         if(!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)){
