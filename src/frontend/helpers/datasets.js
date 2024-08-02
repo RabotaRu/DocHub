@@ -1,5 +1,6 @@
 import requests from './requests';
 import query from '../manifest/query';
+import source from '../../global/datasets/source.mjs';
 import datasetDriver from '@global/datasets/driver.mjs';
 import pathTool from '@global/manifest/tools/path.mjs';
 import env from '@front/helpers/env';
@@ -13,7 +14,9 @@ const compressor = compress({
 });
 
 export default function() {
-	return Object.assign({}, datasetDriver,
+	return Object.assign({
+    parentParseSource: datasetDriver.parseSource
+  }, datasetDriver,
 		{
 			// Дефолтный метод получения объекта данных
 			dsResolver(datasetID) {
@@ -40,6 +43,20 @@ export default function() {
 			},
 			// Драйвер запросов JSONata
 			jsonataDriver: query,
+      async parseSource(context, data, subject, params, baseURI) {
+        const sourceType = source.type(data);
+        if (sourceType === 'id') {
+          const args = { context, data, subject, params, baseURI };
+          if(env.isPlugin())
+            return await window.$PAPI.pullFromCache(`{"path":"/datasets/${data}"}`, async() => {
+              return await this.parentParseSource(context, data, subject, params, baseURI);
+            }, args);
+          else return await this.parentParseSource(context, data, subject, params, baseURI);
+
+        } else {
+          return await this.parentParseSource(context, data, subject, params, baseURI);
+        }
+      },
 			// Переопределяем метод получения данных для работы с бэком
 			getDataOriginal: datasetDriver.getData,
 			async getData(context, subject, params, baseURI) {
